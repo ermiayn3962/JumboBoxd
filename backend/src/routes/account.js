@@ -40,7 +40,8 @@ router.post('/creation',
             'lastName':req.body.lastName,
             'email':req.body.email,
             'clerkID':clerkResponse.id,
-            'password': await bcrypt.hash(req.body.password, 10)
+            'password': await bcrypt.hash(req.body.password, 10),
+            'savedMovies': []
         });
 
         res.status(200).send('User created successfully', JSON.stringify(clerkResponse));
