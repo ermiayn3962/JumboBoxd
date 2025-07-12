@@ -18,5 +18,9 @@ app.use('/movie', movieRoutes);
 
 app.use('/user', userRoutes);
 
+app.get('/', (req, res) => {
+    res.json({ message: 'API is working!' });
+});
+
 
 module.exports = app;
