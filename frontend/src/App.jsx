@@ -4,7 +4,7 @@
 
 import SignInPage from './pages/SignInPage'
 import SignUpPage from './pages/SignUpPage'
-import HomePage from './pages/homePage';
+import HomePage from './pages/HomePage';
 import { Routes, Route } from 'react-router-dom'
 // import { SignIn, SignUp, SignedIn, SignedOut, RedirectToSignIn, Navigate } from "@clerk/clerk-react";
 
