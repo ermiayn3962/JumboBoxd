@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { apiCall } from '../utils/general';
 
 function SignUpPage() {
 const [formData, setFormData] = useState({
@@ -64,28 +65,17 @@ const handleSubmit = async (e) => {
     setIsLoading(true);
     
     try {
-    const response = await fetch('/api/account/creation', {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-    });
+        await apiCall('/account/creation', 'post', formData, null);
 
-    if (response.ok) {
-        // Account created successfully
         navigate('/sign-in', { 
         state: { message: 'Account created successfully! Please sign in.' }
         });
-    } else {
-        const errorData = await response.text();
-        setErrors({ submit: errorData || 'Failed to create account' });
-    }
+
     } catch (error) {
-    console.log(error)
-    setErrors({ submit: 'Network error. Please try again.' });
+        console.log(error)
+        setErrors({ submit: 'Network error. Please try again.' });
     } finally {
-    setIsLoading(false);
+        setIsLoading(false);
     }
 };
 

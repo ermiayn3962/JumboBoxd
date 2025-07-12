@@ -1,8 +1,13 @@
 const express = require('express');
+const cors = require('cors');
 
 // Initializing express
 const app = express();
 app.use(express.json());
+app.use(cors({
+  origin: true, // Allow all origins
+  credentials: true
+}));
 
 require('dotenv').config();
 
