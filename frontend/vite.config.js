@@ -7,5 +7,5 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  base: process.env.VITE_BASE_PATH || '/JumboBoxd'
+  base: process.env.VITE_BASE_PATH || '/'
 })
