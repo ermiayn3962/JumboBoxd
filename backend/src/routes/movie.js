@@ -7,6 +7,26 @@ const router = express.Router();
 const mongoPromise = require('../utils/mongo');
 
 /* IF TIME PERMITS ADD REQUEST AUTHENTICATION */
+router.get('/saved/:clerkID', async(req, res) => {
+    try {
+        const clerkID = req.params.clerkID;
+    
+        const client = await mongoPromise;
+        const db = client.db('accounts').collection('users');
+        const filter = {'clerkID': clerkID};
+    
+        const user = await db.findOne(filter);
+        
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        res.status(200).json({ savedMovies: user.savedMovies || [] });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 router.put('/add', async(req, res) => {
     try {
