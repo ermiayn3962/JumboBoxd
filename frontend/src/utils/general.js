@@ -8,6 +8,8 @@ export const apiCall = async (url, method, body, token) => {
   let response;
   try {
     console.log(import.meta.env.VITE_BASE_URL + url)
+    console.log("The .env file")
+    console.log(import.meta.env)
     response = await fetch(import.meta.env.VITE_BASE_URL + url, {
       method: method,
       headers: {
