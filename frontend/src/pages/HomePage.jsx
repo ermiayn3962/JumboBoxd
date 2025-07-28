@@ -1,4 +1,4 @@
-import { useUser } from '@clerk/clerk-react';
+import { useAuth, useUser } from '@clerk/clerk-react';
 import { useState, useEffect } from 'react';
 import MovieCarousel from '../components/movieCarousel';
 import NavBar from '../components/navBar';
@@ -10,12 +10,14 @@ function HomePage() {
     const { user } = useUser();
     const [savedMovieIds, setSavedMovieIds] = useState([]);
     const [refreshKey, setRefreshKey] = useState(0);
+    const { getToken } = useAuth();
 
     // Fetch saved movie IDs when user changes
     useEffect(() => {
         const fetchSavedMovieIds = async () => {
             try {
-                const savedMoviesData = await apiCall(`movie/saved/${user.id}`, 'GET');
+                const token = await getToken();
+                const savedMoviesData = await apiCall('movie/saved', 'GET', null, token);
                 setSavedMovieIds(savedMoviesData.savedMovies || []);
             } catch (error) {
                 console.error('Error fetching saved movie IDs:', error);
@@ -87,10 +89,8 @@ function HomePage() {
 
     const fetchSavedMovies = async () => {
         try {
-            const clerkID = user.id;
-            
-            // Get saved movie IDs from your backend
-            const savedMoviesData = await apiCall(`movie/saved/${clerkID}`, 'GET');
+            const token = await getToken();
+            const savedMoviesData = await apiCall('movie/saved', 'GET', null, token);
             const movieIDs = savedMoviesData.savedMovies || [];
             
             if (movieIDs.length === 0) {
@@ -127,11 +127,10 @@ function HomePage() {
         try {
             const endpoint = isCurrentlySaved ? 'movie/remove' : 'movie/add';
             const body = {
-                clerkID: user.id,
                 movieID: movieId
             };
-
-            await apiCall(endpoint, 'PUT', body);
+            const token = await getToken();
+            await apiCall(endpoint, 'PUT', body, token);
 
             // Update local state
             if (isCurrentlySaved) {

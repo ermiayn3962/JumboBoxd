@@ -3,17 +3,17 @@
 */
 
 const express = require('express');
+const { getAuth } = require('@clerk/express');
 const router = express.Router();
 const mongoPromise = require('../utils/mongo');
 
-/* IF TIME PERMITS ADD REQUEST AUTHENTICATION */
-router.get('/saved/:clerkID', async(req, res) => {
+router.get('/saved', async(req, res) => {
     try {
-        const clerkID = req.params.clerkID;
+        const { userId } = getAuth(req);
     
         const client = await mongoPromise;
         const db = client.db('accounts').collection('users');
-        const filter = {'clerkID': clerkID};
+        const filter = {'clerkID': userId};
     
         const user = await db.findOne(filter);
         
@@ -30,12 +30,12 @@ router.get('/saved/:clerkID', async(req, res) => {
 
 router.put('/add', async(req, res) => {
     try {
-        const clerkID = req.body.clerkID;
+        const { userId } = getAuth(req);
         const movieID = req.body.movieID;
     
         const client = await mongoPromise;
         const db = client.db('accounts').collection('users');
-        const filter = {'clerkID': clerkID};
+        const filter = {'clerkID': userId};
     
         const user = await db.findOne(filter);
 
@@ -57,12 +57,12 @@ router.put('/add', async(req, res) => {
 
 router.put('/remove', async(req, res) => {
     try {
-        const clerkID = req.body.clerkID;
+        const { userId } = getAuth(req);
         const movieID = req.body.movieID;
     
         const client = await mongoPromise;
         const db = client.db('accounts').collection('users');
-        const filter = {'clerkID': clerkID};
+        const filter = {'clerkID': userId};
     
         const user = await db.findOne(filter);
 

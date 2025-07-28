@@ -8,7 +8,8 @@ const clerkClient = require('../utils/clerk');
 const mongoPromise = require('../utils/mongo');
 const bcrypt = require('bcrypt');
 const { checkAccount, validateSchema } = require('../utils/middleware');
-const { accountCreationSchema, accountUpdateSchema } = require('../utils/accountSchema');
+const { accountCreationSchema } = require('../utils/accountSchema');
+const { ClerkExpressRequireAuth, getAuth } = require('@clerk/clerk-sdk-node');
 
 
 const router = express.Router();
@@ -54,10 +55,10 @@ router.post('/creation',
 
 
 router.delete('/deletion', 
-    validateSchema(accountUpdateSchema),
+    ClerkExpressRequireAuth(),
     async (req, res) => {
     
-    const userID = req.body.id;
+    const userID = getAuth(req);
     
     try {
         // Delete user from Mongo
@@ -83,7 +84,5 @@ router.delete('/deletion',
         res.status(500).send('Server Error', error);
     }
 });
-
-// ADD ACCOUNT EDITING IF TIME ALLOWS
 
 module.exports = router;

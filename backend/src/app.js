@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const { clerkMiddleware } = require('@clerk/express');
 
 // Initializing express
 const app = express();
@@ -8,6 +9,7 @@ app.use(cors({
   origin: true, // Allow all origins
   credentials: true
 }));
+app.use(clerkMiddleware());
 
 require('dotenv').config();
 

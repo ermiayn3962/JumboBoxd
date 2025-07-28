@@ -13,10 +13,5 @@ const accountCreationSchema = accountBaseSchema.fork(
     (schema) => schema.required()
 );
 
-const accountUpdateSchema = accountBaseSchema.fork(
-    ['id'],
-    (schema) => schema.required()
-);
-
-module.exports = {accountCreationSchema, accountUpdateSchema};
+module.exports = {accountCreationSchema};
 
